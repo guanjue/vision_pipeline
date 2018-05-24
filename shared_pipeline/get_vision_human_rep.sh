@@ -108,13 +108,12 @@ do
 		time python $script_folder'peaknorm_rotate_log_z_mean.py' -w 1 -p 1 -n 500000 -a 1 -b $sig1'.upperlim.txt' -c 1 -d $sig2'.upperlim.txt' -u $upperlim -l $lowerlim
 		### rm tmp files
 		rm $sig1'.upperlim.txt' $sig2'.upperlim.txt'
-		cat $sig2_celltype'.pknorm.txt' | awk -F '\t' -v OFS='\t' '{if ($1>=16) print 16; else print $1 }' > $sig2_celltype'.pknorm.16lim.txt'
 		cat $sig2_celltype'.pknorm.txt' | awk -F '\t' -v OFS='\t' '{if ($1>=16) print 16; else if ($1<=2) print 2; else print $1}' > $sig2_celltype'.pknorm.2_16lim.txt'
 	done < $mk'.pknorm_list.rep.txt'
 done
 
-mkdir vision_data_output/
-mv $sig2_celltype'.pknorm.16lim.txt' vision_data_output/
+mkdir vision_data_output_2_16lim/
+mv $sig2_celltype'.pknorm.2_16lim.txt' vision_data_output_2_16lim/
 
 
 
