@@ -28,6 +28,15 @@ H3K27ac
 
 ```
 
+###### replicate_list.txt in input folder
+```
+replicate_list.txt
+>>> head replicate_list.txt 
+R1
+R2
+
+```
+
 ## run pipeline
 ###### The 1st parameter is the script folder of the pipeline; 2nd parameter is the input folder of the data
 ```
