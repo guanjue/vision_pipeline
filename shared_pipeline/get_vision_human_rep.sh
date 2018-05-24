@@ -12,6 +12,7 @@ ref_ref=$3
 ### H3K4me3_H1_R1
 mark_ref_cell=$4
 ### H1
+mark_ref_rep_id=$5
 
 cd $input_folder
 
@@ -24,8 +25,11 @@ do
 	do
 		echo $mk
 		###### 2_nbp
-		time Rscript $script_folder'negative_binomial_p_2r_bgadj.R' $mk'_'$ct'_R1.ip.bed' $mk'_'$ct'_R1.ct.bed' $mk'_'$ct'_R1'
-		time Rscript $script_folder'negative_binomial_p_2r_bgadj.R' $mk'_'$ct'_R2.ip.bed' $mk'_'$ct'_R2.ct.bed' $mk'_'$ct'_R2'
+		for r_id in $(cat replicate_list.txt)
+		do
+			time Rscript $script_folder'negative_binomial_p_2r_bgadj.R' $mk'_'$ct'_'$r_id'.ip.bed' $mk'_'$ct'_'$r_id'.ct.bed' $mk'_'$ct'_'$r_id
+		done
+	done
 done
 
 ###### (3) Prepare PKnorm list (between reference sample)
@@ -35,7 +39,7 @@ do
 	echo $mk
 	### select the reference sample for different mark reference pknorm normalization
 	echo $ref_ref'.nbp_2r_bgadj.txt' >> 'pknorm_list.1.txt'
-	echo $mk'_'$mark_ref_cell'_R1.nbp_2r_bgadj.txt' >> 'pknorm_list.2.txt'
+	echo $mk'_'$mark_ref_cell'_'$mark_ref_rep_id'.nbp_2r_bgadj.txt' >> 'pknorm_list.2.txt'
 done
 paste 'pknorm_list.1.txt' 'pknorm_list.2.txt' > 'pknorm_list_reference.rep.txt'
 rm 'pknorm_list.1.txt'
@@ -49,9 +53,9 @@ do
 	for ct in $(cat cell_list.txt)
 	do
 		echo $ct
-		echo $mk'_'$mark_ref_cell'_R1.pknorm.ref.txt' >> $mk'.pknorm_list.1.txt'
+		echo $mk'_'$mark_ref_cell'_'$mark_ref_rep_id'.pknorm.ref.txt' >> $mk'.pknorm_list.1.txt'
 		echo $mk'_'$ct'_R1.nbp_2r_bgadj.txt' >> $mk'.pknorm_list.2.txt'
-		echo $mk'_'$mark_ref_cell'_R1.pknorm.ref.txt' >> $mk'.pknorm_list.1.txt'
+		echo $mk'_'$mark_ref_cell'_'$mark_ref_rep_id'.pknorm.ref.txt' >> $mk'.pknorm_list.1.txt'
 		echo $mk'_'$ct'_R2.nbp_2r_bgadj.txt' >> $mk'.pknorm_list.2.txt'
 	done
 	paste $mk'.pknorm_list.1.txt' $mk'.pknorm_list.2.txt' > $mk'.pknorm_list.rep.txt'
