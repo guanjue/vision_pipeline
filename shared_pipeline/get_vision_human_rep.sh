@@ -8,24 +8,14 @@
 
 script_folder=$1
 input_folder=$2
+ref_ref=$3
+### H3K4me3_H1_R1
+mark_ref_cell=$4
+### H1
 
 cd $input_folder
 
-###### change name
-for ct in $(cat cell_list.txt)
-do
-	echo $ct
-	for mk in $(cat mark_list.txt)
-	do
-		echo $mk
-		mv $mk'_'$ct'_R1.ct.bed' $mk'_'$ct'_1.ct.bed'
-		mv $mk'_'$ct'_R2.ct.bed' $mk'_'$ct'_2.ct.bed'
-		mv $mk'_'$ct'_R1.ip.bed' $mk'_'$ct'_1.ip.bed'
-		mv $mk'_'$ct'_R2.ip.bed' $mk'_'$ct'_2.ip.bed'
-	done
-done
-
-###### (1) NB-p-value --> (2) Fisher-p-value
+###### (1) Reads-count --> (2) NB-p-value 
 #sleep 20000
 for ct in $(cat cell_list.txt)
 do
@@ -34,13 +24,8 @@ do
 	do
 		echo $mk
 		###### 2_nbp
-		time Rscript $script_folder'negative_binomial_p_2r_bgadj.R' $mk'_'$ct'_1.ip.bed' $mk'_'$ct'_1.ct.bed' $mk'_'$ct'_1'
-		time Rscript $script_folder'negative_binomial_p_2r_bgadj.R' $mk'_'$ct'_2.ip.bed' $mk'_'$ct'_2.ct.bed' $mk'_'$ct'_2'
-		###### fisher-p-value
-		if [ ! -f $mk'_'$ct'.fisher_p.txt' ]; then
-			time Rscript $script_folder'fisher_pval.R' $mk'_'$ct '.nbp_2r_bgadj.txt' '/storage/home/gzx103/scratch/vision/human/data2run/' 500
-		fi
-	done
+		time Rscript $script_folder'negative_binomial_p_2r_bgadj.R' $mk'_'$ct'_R1.ip.bed' $mk'_'$ct'_R1.ct.bed' $mk'_'$ct'_R1'
+		time Rscript $script_folder'negative_binomial_p_2r_bgadj.R' $mk'_'$ct'_R2.ip.bed' $mk'_'$ct'_R2.ct.bed' $mk'_'$ct'_R2'
 done
 
 ###### (3) Prepare PKnorm list (between reference sample)
@@ -49,8 +34,8 @@ for mk in $(cat mark_list.txt)
 do
 	echo $mk
 	### select the reference sample for different mark reference pknorm normalization
-	echo 'H3K4me3_H1_1.nbp_2r_bgadj.txt' >> 'pknorm_list.1.txt'
-	echo $mk'_H1_1.nbp_2r_bgadj.txt' >> 'pknorm_list.2.txt'
+	echo $ref_ref'.nbp_2r_bgadj.txt' >> 'pknorm_list.1.txt'
+	echo $mk'_'$mark_ref_cell'_R1.nbp_2r_bgadj.txt' >> 'pknorm_list.2.txt'
 done
 paste 'pknorm_list.1.txt' 'pknorm_list.2.txt' > 'pknorm_list_reference.rep.txt'
 rm 'pknorm_list.1.txt'
@@ -64,10 +49,10 @@ do
 	for ct in $(cat cell_list.txt)
 	do
 		echo $ct
-		echo $mk'_H1_1.pknorm.ref.txt' >> $mk'.pknorm_list.1.txt'
-		echo $mk'_'$ct'_1.nbp_2r_bgadj.txt' >> $mk'.pknorm_list.2.txt'
-		echo $mk'_H1_1.pknorm.ref.txt' >> $mk'.pknorm_list.1.txt'
-		echo $mk'_'$ct'_2.nbp_2r_bgadj.txt' >> $mk'.pknorm_list.2.txt'
+		echo $mk'_'$mark_ref_cell'_R1.pknorm.ref.txt' >> $mk'.pknorm_list.1.txt'
+		echo $mk'_'$ct'_R1.nbp_2r_bgadj.txt' >> $mk'.pknorm_list.2.txt'
+		echo $mk'_'$mark_ref_cell'_R1.pknorm.ref.txt' >> $mk'.pknorm_list.1.txt'
+		echo $mk'_'$ct'_R2.nbp_2r_bgadj.txt' >> $mk'.pknorm_list.2.txt'
 	done
 	paste $mk'.pknorm_list.1.txt' $mk'.pknorm_list.2.txt' > $mk'.pknorm_list.rep.txt'
 	rm $mk'.pknorm_list.1.txt' 

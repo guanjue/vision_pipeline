@@ -4,7 +4,6 @@
 #### Python/2.7
 ###### numpy, matplotlib, scipy
 #### R
-###### metap
 
 
 
@@ -32,6 +31,6 @@ H3K27ac
 ## run pipeline
 ###### The 1st parameter is the script folder of the pipeline; 2nd parameter is the input folder of the data
 ```
-time sh /storage/home/gzx103/scratch/vision/human/data2run/shared_pipeline/get_vision_human_rep.sh /storage/home/gzx103/scratch/vision/human/data2run/shared_pipeline/ /storage/home/gzx103/scratch/vision/human/data2run/test_data/
+time sh /storage/home/gzx103/scratch/vision/human/data2run/shared_pipeline/get_vision_human_rep.sh /storage/home/gzx103/scratch/vision/human/data2run/shared_pipeline/ /storage/home/gzx103/scratch/vision/human/data2run/test_data/ H3K4me3_H1_R1 H1
 ```
 
