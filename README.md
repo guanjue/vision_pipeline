@@ -29,7 +29,8 @@ H3K27ac
 
 ```
 
-###### run pipeline (The 1st parameter is the script folder of the pipeline; 2nd parameter is the input folder of the data)
+## run pipeline
+###### The 1st parameter is the script folder of the pipeline; 2nd parameter is the input folder of the data
 ```
 time sh /storage/home/gzx103/scratch/vision/human/data2run/shared_pipeline/get_vision_human_rep.sh /storage/home/gzx103/scratch/vision/human/data2run/shared_pipeline/ /storage/home/gzx103/scratch/vision/human/data2run/test_data/
 ```
