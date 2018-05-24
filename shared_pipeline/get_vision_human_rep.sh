@@ -113,8 +113,8 @@ do
 done
 
 mkdir vision_data_output_2_16lim/
-mv $sig2_celltype'.pknorm.2_16lim.txt' vision_data_output_2_16lim/
+mv *.pknorm.2_16lim.txt vision_data_output_2_16lim/
+
+ls vision_data_output_2_16lim/* > vision_pknorm_2_16lim_list.txt
 
 
-
- 
