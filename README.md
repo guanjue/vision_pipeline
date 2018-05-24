@@ -39,7 +39,10 @@ R2
 
 ## run pipeline
 ###### The 1st parameter is the script folder of the pipeline; 2nd parameter is the input folder of the data
+###### The 3rd parameter is the reference sample for across mark normalization (e.g. H3K4me3_H1_R1)
+###### The 4th parameter is the reference cell type within mark normalization (e.g. H1)
+###### The 5th parameter is the reference replicate id within mark normalization (e.g. R1)
 ```
-time sh /storage/home/gzx103/scratch/vision/human/data2run/shared_pipeline/get_vision_human_rep.sh /storage/home/gzx103/scratch/vision/human/data2run/shared_pipeline/ /storage/home/gzx103/scratch/vision/human/data2run/test_data/ H3K4me3_H1_R1 H1 R1
+time sh /storage/home/software/shared_pipeline/get_vision_human_rep.sh /storage/home/software/shared_pipeline/ /storage/home/data2run/test_data/ H3K4me3_H1_R1 H1 R1
 ```
 
