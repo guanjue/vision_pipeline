@@ -124,7 +124,8 @@ do
 	done < $mk'.pknorm_list.rep.txt'
 done
 
-
+mkdir vision_data_output/
+mv $sig2_celltype'.pknorm.16lim.txt' vision_data_output/
 
 
 
