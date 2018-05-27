@@ -1,5 +1,3 @@
-#script_folder=/storage/home/gzx103/scratch/vision/human/data2run/shared_pipeline/
-#input_folder=/storage/home/gzx103/scratch/vision/human/data2run/
 ###### Dependence
 ### R
 # metap
@@ -118,7 +116,13 @@ mv *.pknorm.2_16lim.txt vision_data_output_2_16lim/
 
 ###### write ideas input file
 ls vision_data_output_2_16lim/ > vision_pknorm_2_16lim_filelist.txt
-rm ideas.input
+### remove previous ideas.input file
+if [ -f ideas.input ]
+then
+	echo 'remove previous ideas.input'
+	rm ideas.input
+fi
+### get new ideas.input file
 for filename in $(cat vision_pknorm_2_16lim_filelist.txt)
 do
 	echo $filename
