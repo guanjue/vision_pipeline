@@ -115,6 +115,18 @@ done
 mkdir vision_data_output_2_16lim/
 mv *.pknorm.2_16lim.txt vision_data_output_2_16lim/
 
-ls vision_data_output_2_16lim/* > vision_pknorm_2_16lim_list.txt
+
+###### write ideas input file
+ls vision_data_output_2_16lim/ > vision_pknorm_2_16lim_filelist.txt
+rm ideas.input
+for filename in $(cat vision_pknorm_2_16lim_filelist.txt)
+do
+	echo $filename
+	mk=$(echo "$filename" | awk -F '_' '{print $1}')
+	ct=$(echo "$filename" | awk -F '_' '{print $2}')
+	rep=$(echo "$filename" | awk -F '.' '{print $1}' | awk -F '_' '{print $3}')
+	echo $ct'_'$rep $mk $input_folder'vision_data_output_2_16lim/'$filename >> ideas.input
+done
+
 
 
