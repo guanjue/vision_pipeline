@@ -13,14 +13,15 @@ prob_vec = c()
 ### read data
 sig = read.table(signal_track_file, header = F)
 input = read.table(input_track_file, header = F)
-thesh = 0
+thresh = 0
+pk_thresh = 0.05
 
 #####################################################################################################################
 #####################################################################################################################
 #####################################################################################################################
 ### get sig bg regions no bgs
 sig_bg = sig[,1]
-sig_bg_non0 = sig_bg[sig_bg>thesh]
+sig_bg_non0 = sig_bg[sig_bg>thresh]
 sig_bg_mean = mean(sig_bg_non0)
 sig_bg_var = var(sig_bg_non0)
 print(paste('check signal track overdispersion in background regions, var/mean=', toString(round(sig_bg_var/sig_bg_mean, digits=3)) ))
@@ -41,7 +42,7 @@ if (sig_bg_prob>=0.9){
 sig_bg_size = sig_bg_mean * sig_bg_prob / (1-sig_bg_prob)
 ### get input bg regions
 input_bg = input[,1]
-input_bg_non0 = input_bg[input_bg>thesh]
+input_bg_non0 = input_bg[input_bg>thresh]
 input_bg_mean = mean(input_bg_non0)
 inpy_bg_var = var(input_bg_non0)
 print(paste('check input track overdispersion in background regions, var/mean=', toString(round(inpy_bg_var/input_bg_mean, digits=3)) ))
@@ -68,7 +69,7 @@ print(summary(nb_pval))
 ############### second round
 ### get sig bg regions
 sig_bg = sig[nb_pval>=0.001,]
-sig_bg_non0 = sig_bg[sig_bg>thesh]
+sig_bg_non0 = sig_bg[sig_bg>thresh]
 sig_bg_mean = mean(sig_bg_non0)
 sig_bg_var = var(sig_bg_non0)
 print(paste('check signal track overdispersion in background regions, var/mean=', toString(round(sig_bg_var/sig_bg_mean, digits=3)) ))
@@ -95,7 +96,7 @@ prob_vec[1] = sig_bg_prob
 
 ### get input bg regions
 input_bg = input[nb_pval>=0.001,]
-input_bg_non0 = input_bg[input_bg>thesh]
+input_bg_non0 = input_bg[input_bg>thresh]
 input_bg_mean = mean(input_bg_non0)
 inpy_bg_var = var(input_bg_non0)
 print(paste('check input track overdispersion in background regions, var/mean=', toString(round(inpy_bg_var/input_bg_mean, digits=3)) ))
@@ -121,6 +122,9 @@ write.table(neglog10_nb_pval, paste(output_name, '.nbp_2r_bgadj.txt', sep=''), q
 #####################################################################################################################
 #####################################################################################################################
 
-info_matrix = cbind(mean_vec, var_vec, size_vec, prob_vec)
+### get FRiP score
+FRiP = sum(neglog10_nb_pval[nb_pval<pk_thresh]) / sum(neglog10_nb_pval)
+
+info_matrix = cbind(mean_vec, var_vec, size_vec, prob_vec, FRiP)
 write.table(info_matrix, paste(output_name, '.mvsp.txt', sep=''), quote=FALSE, col.names=FALSE, row.names=FALSE, sep='\t')
 
